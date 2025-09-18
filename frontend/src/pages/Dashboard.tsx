@@ -17,6 +17,7 @@ import { Sheet, SheetTrigger, SheetContent } from "../components/ui/sheet";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useSampleContent } from "../hooks/useSampleContent";
+import { Logo } from "../icons/Logo";
 
 interface Tag {
   _id: string;
@@ -264,7 +265,7 @@ export const Dashboard = () => {
                   <Button
                     onClick={() => navigate("/signup")}
                     variant="primary"
-                    text="Get Started — Sign up"
+                    text="Get Started - Sign up"
                   />
                   <Button
                     onClick={() =>
@@ -279,13 +280,11 @@ export const Dashboard = () => {
               </div>
 
               <div className="flex-1 flex items-center justify-center">
-                {/* lightweight illustration */}
                 <div className="w-48 h-48 rounded-xl bg-gradient-to-br from-indigo-500 to-pink-500 flex items-center justify-center text-white text-center p-6 shadow-lg">
-                  <div>
-                    <strong className="text-lg block">ReBrain</strong>
-                    <span className="text-xs block mt-1">
-                      Save • Tag • Share
-                    </span>
+                  <div className="flex flex-col items-center justify-center gap-1">
+                    <Logo className="w-12 h-12" />
+                    <strong className="text-lg">ReBrain</strong>
+                    <span className="text-xs mt-1">Save • Tag • Share</span>
                   </div>
                 </div>
               </div>
@@ -348,13 +347,16 @@ export const Dashboard = () => {
 
           {/* empty state when there are no contents (and user is authenticated) */}
           {isAuthenticated && filteredContents.length === 0 && (
-            <div className="col-span-full p-8 bg-white rounded-lg shadow text-center">
-              <h3 className="text-xl font-semibold mb-2">
-                Your dashboard is empty
-              </h3>
-              <p className="text-sm text-gray-600">
-                <strong>Add Content</strong>
-              </p>
+            <div className="flex items-center justify-center min-h-[70vh] w-full">
+              <div className="text-center">
+                <h3 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-3">
+                  Your dashboard is empty
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Add your first note — save links, videos or documents and
+                  organize them with tags.
+                </p>
+              </div>
             </div>
           )}
         </div>
