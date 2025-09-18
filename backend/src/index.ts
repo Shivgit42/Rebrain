@@ -19,6 +19,24 @@ app.use(
   })
 );
 
+app.get("/api/v1/sample-content", async (req, res) => {
+  try {
+    const demoUsername = process.env.DEMO_USERNAME || "demo";
+    const demoUser = await UserModel.findOne({ username: demoUsername });
+    if (!demoUser)
+      return res.status(404).json({ message: "Demo user not found" });
+
+    const content = await ContentModel.find({ userId: demoUser._id }).populate(
+      "tags",
+      "title"
+    );
+    res.json({ content });
+  } catch (e) {
+    console.error("Failed to load sample content", e);
+    res.status(500).json({ message: "Failed to load sample content" });
+  }
+});
+
 app.post("/api/v1/signup", async (req, res) => {
   //zod validation
   const userProfileSchema = z.object({
