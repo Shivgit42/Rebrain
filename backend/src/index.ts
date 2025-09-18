@@ -19,8 +19,6 @@ app.use(
   })
 );
 
-app.options("*", cors());
-
 app.post("/api/v1/signup", async (req, res) => {
   //zod validation
   const userProfileSchema = z.object({
