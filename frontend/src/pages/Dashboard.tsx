@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "../components/Button";
@@ -15,6 +16,7 @@ import toast from "react-hot-toast";
 import { Sheet, SheetTrigger, SheetContent } from "../components/ui/sheet";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { useSampleContent } from "../hooks/useSampleContent";
 
 interface Tag {
   _id: string;
@@ -32,7 +34,7 @@ interface Content {
 export const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const { contents, refresh } = useContent();
-  const [localContents, setLocalContents] = useState<Content[]>(contents);
+  const [localContents, setLocalContents] = useState<Content[]>([]);
   const [filterType, setFilterType] = useState<
     "twitter" | "youtube" | "document" | "link" | "tag" | null
   >(null);
@@ -40,8 +42,9 @@ export const Dashboard = () => {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // determine auth (simple): token presence
   const { isAuthenticated } = useAuth();
+
+  const { sample, loading: sampleLoading } = useSampleContent();
 
   const allTags = useMemo(() => {
     return [
@@ -58,9 +61,13 @@ export const Dashboard = () => {
   }, [filterType, allTags, selectedTag]);
 
   useEffect(() => {
-    // sync from hook
+    if (!isAuthenticated) {
+      setLocalContents(sample?.length ? sample : localContents);
+      return;
+    }
+
     setLocalContents(contents);
-  }, [contents]);
+  }, [isAuthenticated, contents, sample]);
 
   useEffect(() => {
     if (!modalOpen) {
@@ -102,7 +109,7 @@ export const Dashboard = () => {
     document.documentElement.classList.toggle("dark", storedTheme === "dark");
   }, []);
 
-  // handle share (only for auth users)
+  // handle share
   const handleShare = async () => {
     if (!isAuthenticated) {
       navigate("/signup");
@@ -145,8 +152,8 @@ export const Dashboard = () => {
     }
   };
 
-  // demo sample content (optional) — displayed if an unauthenticated user clicks "Preview sample"
-  const sampleContents: Content[] = [
+  // local static fallback sample (kept for preview button)
+  const fallbackSampleContents: Content[] = [
     {
       _id: "demo-1",
       title: "How to learn React fast",
@@ -260,7 +267,11 @@ export const Dashboard = () => {
                     text="Get Started — Sign up"
                   />
                   <Button
-                    onClick={() => setLocalContents(sampleContents)}
+                    onClick={() =>
+                      setLocalContents(
+                        sample?.length ? sample : fallbackSampleContents
+                      )
+                    }
                     variant="secondary"
                     text="Preview sample"
                   />
@@ -279,6 +290,13 @@ export const Dashboard = () => {
                 </div>
               </div>
             </div>
+
+            {/* show loading when sample is being fetched */}
+            {sampleLoading && (
+              <div className="mt-4 text-sm text-gray-500">
+                Loading preview...
+              </div>
+            )}
           </div>
         )}
 
