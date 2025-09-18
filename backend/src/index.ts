@@ -14,10 +14,12 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://rebrain.shivamte.me/"],
+    origin: ["http://localhost:5173", "https://rebrain.shivamte.me"],
     credentials: true,
   })
 );
+
+app.options("*", cors());
 
 app.post("/api/v1/signup", async (req, res) => {
   //zod validation
