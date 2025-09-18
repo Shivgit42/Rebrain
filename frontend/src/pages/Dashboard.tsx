@@ -243,10 +243,10 @@ export const Dashboard = () => {
 
         {/* If not authenticated: show overview / hero */}
         {!isAuthenticated && (
-          <div className="rounded-lg bg-white p-8 shadow-md mb-6 max-w-4xl">
+          <div className="rounded-lg bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-r-gray-700 p-8 shadow-md mb-6 max-w-4xl">
             <div className="flex flex-col lg:flex-row gap-6">
               <div className="flex-1">
-                <h2 className="text-2xl font-bold mb-3">
+                <h2 className="text-2xl dark:text-white font-bold mb-3">
                   Welcome to ReBrain — your second brain
                 </h2>
                 <p className="text-gray-600 mb-4">
