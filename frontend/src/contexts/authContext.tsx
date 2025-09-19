@@ -5,6 +5,7 @@ export type AuthContextValue = {
   login: (token: string | null) => void;
   logout: () => void;
   token: string | null;
+  loading: boolean;
 };
 
 export const AuthContext = React.createContext<AuthContextValue | undefined>(

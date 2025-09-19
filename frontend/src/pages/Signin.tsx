@@ -65,7 +65,7 @@ export const Signin = () => {
       } else {
         if (response.data?.token) login(response.data.token);
       }
-
+      toast.dismiss("auth-error");
       toast.success("You have signed in successfully!", {
         duration: 3000,
         style: {

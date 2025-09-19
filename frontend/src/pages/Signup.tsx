@@ -44,7 +44,7 @@ export const Signup = () => {
       });
       const jwt = response.data.token;
       if (jwt) login(jwt);
-
+      toast.dismiss("auth-error");
       toast.success("Account created successfully!");
       navigate("/dashboard", { replace: true });
     } catch (e: any) {
