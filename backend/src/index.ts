@@ -16,6 +16,7 @@ app.use(
   cors({
     origin: ["http://localhost:5173", "https://rebrain.shivamte.me"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization", "Accept"],
   })
 );
 
@@ -63,12 +64,13 @@ app.post("/api/v1/signup", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await UserModel.create({
+    const created = await UserModel.create({
       username,
       password: hashedPassword,
     });
 
-    res.json({ message: "User signed up" });
+    const token = jwt.sign({ id: created._id }, process.env.JWT_SECRET!);
+    return res.json({ message: "User signed up", token });
   } catch (err) {
     res.status(500).json({ message: "Error while signing up" });
   }
