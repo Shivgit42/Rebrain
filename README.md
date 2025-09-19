@@ -1,6 +1,6 @@
 # ReBrain
 
-Your personal **second brain** — Save, Tag & Share your content in one place.
+Your personal **second brain** - Save, Tag & Share your content in one place.
 
 ---
 
